@@ -3,4 +3,6 @@
 ################################################################################
 
 /src/LearnOpenGL/Debug
-/src/LearnOpenGL/.vs/LearnOpenGL/v16
+/src/LearnOpenGL/x64
+/src/LearnOpenGL/.vs
+
