@@ -4,7 +4,8 @@
 
 enum DrawerType
 {
-	TypeTriangle = 0
+	TypeTriangle = 0,
+	TypeRectangle,
 };
 
 class DrawerFactory

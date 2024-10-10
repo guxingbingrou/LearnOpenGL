@@ -150,12 +150,14 @@
     <ClCompile Include="DrawerFactory.cpp" />
     <ClCompile Include="GLUtils.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RectangleDrawer.cpp" />
     <ClCompile Include="TriangleDrawer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawerFactory.h" />
     <ClInclude Include="GLUtils.h" />
     <ClInclude Include="IDrawer.h" />
+    <ClInclude Include="RectangleDrawer.h" />
     <ClInclude Include="TriangleDrawer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

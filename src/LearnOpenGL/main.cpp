@@ -16,7 +16,8 @@ void processInput(GLFWwindow* window) {
 }
 
 int main() {
-	auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTriangle));
+	//auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTriangle));
+	auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeRectangle));
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
