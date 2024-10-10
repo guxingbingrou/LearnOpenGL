@@ -1,6 +1,7 @@
 #include "TriangleDrawer.h"
 #include "GLUtils.h"
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 static float vertices[]{
 	//Î»ÖÃ                  //ÑÕÉ«
@@ -13,9 +14,10 @@ static const char vertexStr[] = GLSL_STRING(#version 330 core \n
 	layout (location = 0) in vec3 aPos; 
 	layout (location = 1) in vec3 aColor;
 	out vec3 ourColor;
+	uniform vec2 offset;
 	void main() { 
-		gl_Position = vec4(aPos, 1.0f);
-		ourColor = aColor;
+		gl_Position = vec4(aPos.x + offset.x, aPos.y + offset.y, aPos.z, 1.0f);
+		ourColor = vec3(aColor.x + offset.x, aColor.y + offset.x, aColor.z + offset.x);
 	}
 );
 
@@ -49,6 +51,7 @@ void TriangleDrawer::PreperDrawer()
 		return;
 	}
 	glUseProgram(m_program);
+	m_offset_location = glGetUniformLocation(m_program, "offset");
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
 	glEnableVertexAttribArray(0);
@@ -68,6 +71,12 @@ void TriangleDrawer::Draw()
 {
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
+
+	float timeValue = glfwGetTime();
+	float x_offset = sin(timeValue) / 2.0f;
+	float y_offset = cos(timeValue) / 2.0f;
+	glUniform2f(m_offset_location, x_offset, y_offset);
+
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindVertexArray(0);
 }

@@ -1,6 +1,7 @@
 #include "DrawerFactory.h"
 #include "TriangleDrawer.h"
 #include "RectangleDrawer.h"
+#include "TextureDrawer.h"
 
 IDrawer* DrawerFactory::CreateDrawer(DrawerType type)
 {
@@ -12,6 +13,9 @@ IDrawer* DrawerFactory::CreateDrawer(DrawerType type)
 		break;
 	case TypeRectangle:
 		drawer = new RectangleDrawer();
+		break;
+	case TypeTexture:
+		drawer = new TextureDrawer();
 		break;
 	default:
 		break;

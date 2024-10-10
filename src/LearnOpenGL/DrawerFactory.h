@@ -6,6 +6,7 @@ enum DrawerType
 {
 	TypeTriangle = 0,
 	TypeRectangle,
+	TypeTexture,
 };
 
 class DrawerFactory

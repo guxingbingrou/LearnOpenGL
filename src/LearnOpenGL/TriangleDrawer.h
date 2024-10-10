@@ -17,5 +17,7 @@ private:
 	GLuint m_vao = 0;
 	GLuint m_program = 0;
 
+	GLint m_offset_location = 0;
+
 };
 
