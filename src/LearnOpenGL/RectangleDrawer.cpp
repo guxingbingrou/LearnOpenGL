@@ -1,6 +1,7 @@
 #include "RectangleDrawer.h"
 #include "GLUtils.h"
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 static float vertices[]{
 	0.5f, 0.5f, 0.0f,  //срио╫г
@@ -24,9 +25,10 @@ static const char vertexStr[] = GLSL_STRING(#version 330 core \n
 
 static const char fragmentStr[] = GLSL_STRING(#version 330 core \n
 	out vec4 FragColor;
+	uniform vec4 ourColor;
 
 	void main() {
-		FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+		FragColor = ourColor;
 	}
 );
 
@@ -60,18 +62,25 @@ void RectangleDrawer::PreperDrawer()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 	glEnableVertexAttribArray(0);
 
+	m_color_location = glGetUniformLocation(m_program, "ourColor");
+
 	glUseProgram(0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void RectangleDrawer::Draw()
 {
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
+
+	float timeValue = glfwGetTime();
+	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+	glUniform4f(m_color_location, 0.0f, greenValue, 0.0f, 1.0f);
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	
 	glBindVertexArray(0);
@@ -79,6 +88,7 @@ void RectangleDrawer::Draw()
 
 void RectangleDrawer::AfterDraw()
 {
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDeleteVertexArrays(1, &m_vao);
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteBuffers(1, &m_ebo);
