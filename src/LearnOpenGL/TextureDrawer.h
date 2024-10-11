@@ -1,6 +1,7 @@
 #pragma once
-#include "IDrawer.h"
 #include <glad/glad.h>
+#include "IDrawer.h"
+
 class TextureDrawer : public IDrawer
 {
 public:
@@ -10,6 +11,7 @@ public:
 	void PreperDrawer() override;
 	void Draw(int width, int height) override;
 	void AfterDraw() override;
+	void ProcessInput(GLFWwindow* window) override;
 
 private:
 	void LoadTexture();

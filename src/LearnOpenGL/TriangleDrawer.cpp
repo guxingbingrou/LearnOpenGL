@@ -87,3 +87,7 @@ void TriangleDrawer::AfterDraw()
 	glDeleteBuffers(1, &m_vbo);
 	GLUtils::DeletePrograme(m_program);
 }
+
+void TriangleDrawer::ProcessInput(GLFWwindow* window) {
+
+}

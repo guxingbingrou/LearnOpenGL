@@ -1,9 +1,9 @@
-#include "DrawerFactory.h"
+
 #include "TriangleDrawer.h"
 #include "RectangleDrawer.h"
 #include "TextureDrawer.h"
 #include "ThreeDimensionalDrawer.h"
-
+#include "DrawerFactory.h"
 IDrawer* DrawerFactory::CreateDrawer(DrawerType type)
 {
 	IDrawer* drawer = nullptr;

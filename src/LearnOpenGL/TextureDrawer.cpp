@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#define STB_IMAGE_STATIC
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 static const char* RESOURCE_DIR = "D:\\study\\VS2019Project\\LearnOpenGL\\resources";
@@ -219,4 +221,8 @@ void TextureDrawer::LoadTexture()
 	stbi_image_free(data[1]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void TextureDrawer::ProcessInput(GLFWwindow* window) {
+
 }

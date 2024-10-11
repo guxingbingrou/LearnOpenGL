@@ -94,3 +94,7 @@ void RectangleDrawer::AfterDraw()
 	glDeleteBuffers(1, &m_ebo);
 	GLUtils::DeletePrograme(m_program);
 }
+
+void RectangleDrawer::ProcessInput(GLFWwindow* window) {
+
+}

@@ -2,12 +2,10 @@
 #include "GLUtils.h"
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#ifndef STB_IMAGE_IMPLEMENTATION
+
+
+#define STB_IMAGE_STATIC
 #define STB_IMAGE_IMPLEMENTATION
-#endif // !STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 static const char* RESOURCE_DIR = "D:\\study\\VS2019Project\\LearnOpenGL\\resources";
@@ -91,6 +89,13 @@ static const char fragmentStr[] = GLSL_STRING(#version 330 core \n
 	}
 );
 
+ThreeDimensionalDrawer::ThreeDimensionalDrawer():
+	m_camera_pos(0.0f, 0.0f, 3.0f),
+	m_camera_front(0.0f, 0.0f, -1.0f),
+	m_camera_up(0.0f, 1.0f, 0.0f)
+{
+
+}
 
 ThreeDimensionalDrawer::~ThreeDimensionalDrawer()
 {
@@ -145,6 +150,7 @@ void ThreeDimensionalDrawer::PreperDrawer()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 }
 
 void ThreeDimensionalDrawer::Draw(int width, int height)
@@ -168,20 +174,28 @@ void ThreeDimensionalDrawer::Draw(int width, int height)
 		  glm::vec3(1.5f,  0.2f, -1.5f),
 		  glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
-
+	
 	glBindVertexArray(m_vao);
 
 	for (int i = 0; i < 10; ++i) {
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, cubePositions[i]);
 
+		float timeValue = glfwGetTime();
+
 		if(i % 3 == 0)
-			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+			model = glm::rotate(model, timeValue, glm::vec3(1.0f, 1.0f, 1.0f));
 
 		glUniformMatrix4fv(m_model_location, 1, GL_FALSE, glm::value_ptr(model));
 
 		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		//float radius = 10.0f;
+		//float camX = sin(timeValue) * radius;
+		//float camZ = cos(timeValue) * radius;
+		//view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		view = glm::lookAt(m_camera_pos, m_camera_pos + m_camera_front, m_camera_up);
+
 
 		glUniformMatrix4fv(m_view_location, 1, GL_FALSE, glm::value_ptr(view));
 
@@ -205,6 +219,7 @@ void ThreeDimensionalDrawer::Draw(int width, int height)
 void ThreeDimensionalDrawer::AfterDraw()
 {
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glDisable(GL_DEPTH_TEST);
 	glDeleteVertexArrays(1, &m_vao);
 	glDeleteBuffers(1, &m_vbo);
@@ -272,4 +287,16 @@ void ThreeDimensionalDrawer::LoadTexture()
 	stbi_image_free(data[1]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ThreeDimensionalDrawer::ProcessInput(GLFWwindow* window) {
+	float cameraSpeed = 0.05f;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		m_camera_pos += m_camera_front * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		m_camera_pos -= m_camera_front * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		m_camera_pos -= glm::normalize(glm::cross(m_camera_front, m_camera_up))  * cameraSpeed;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		m_camera_pos += glm::normalize(glm::cross(m_camera_front, m_camera_up)) * cameraSpeed;
 }

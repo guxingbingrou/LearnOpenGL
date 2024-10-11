@@ -1,6 +1,6 @@
 #include "GLUtils.h"
 #include <iostream>
-
+#include <glad/glad.h>
 
 GLuint GLUtils::LoadShader(GLenum shaderType, const char* shaderSource)
 {

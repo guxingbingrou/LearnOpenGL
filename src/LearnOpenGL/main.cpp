@@ -16,10 +16,13 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+void processInput(GLFWwindow* window, IDrawer* drawer) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	if (drawer)
+		drawer->ProcessInput(window);
 }
 
 int main() {
@@ -57,7 +60,7 @@ int main() {
 	while (!glfwWindowShouldClose(window))
 	{
 		//´¦ÀíÊäÈë
-		processInput(window);
+		processInput(window, drawer.get());
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -71,7 +74,6 @@ int main() {
 	}
 
 	drawer->AfterDraw();
-
 
 
 	glfwTerminate();
