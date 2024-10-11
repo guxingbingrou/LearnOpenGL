@@ -2,6 +2,7 @@
 #include "TriangleDrawer.h"
 #include "RectangleDrawer.h"
 #include "TextureDrawer.h"
+#include "ThreeDimensionalDrawer.h"
 
 IDrawer* DrawerFactory::CreateDrawer(DrawerType type)
 {
@@ -16,6 +17,9 @@ IDrawer* DrawerFactory::CreateDrawer(DrawerType type)
 		break;
 	case TypeTexture:
 		drawer = new TextureDrawer();
+		break;
+	case TypeThreeDimensional:
+		drawer = new ThreeDimensionalDrawer();
 		break;
 	default:
 		break;

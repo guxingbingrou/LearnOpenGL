@@ -152,6 +152,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RectangleDrawer.cpp" />
     <ClCompile Include="TextureDrawer.cpp" />
+    <ClCompile Include="ThreeDimensionalDrawer.cpp" />
     <ClCompile Include="TriangleDrawer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <ClInclude Include="IDrawer.h" />
     <ClInclude Include="RectangleDrawer.h" />
     <ClInclude Include="TextureDrawer.h" />
+    <ClInclude Include="ThreeDimensionalDrawer.h" />
     <ClInclude Include="TriangleDrawer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

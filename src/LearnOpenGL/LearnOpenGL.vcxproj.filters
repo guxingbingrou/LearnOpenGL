@@ -36,6 +36,9 @@
     <ClCompile Include="TextureDrawer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ThreeDimensionalDrawer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IDrawer.h">
@@ -54,6 +57,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TextureDrawer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreeDimensionalDrawer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

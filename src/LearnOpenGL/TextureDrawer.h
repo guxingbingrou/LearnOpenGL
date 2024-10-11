@@ -8,7 +8,7 @@ public:
 	~TextureDrawer();
 
 	void PreperDrawer() override;
-	void Draw() override;
+	void Draw(int width, int height) override;
 	void AfterDraw() override;
 
 private:

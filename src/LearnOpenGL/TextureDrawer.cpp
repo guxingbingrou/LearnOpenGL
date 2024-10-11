@@ -5,8 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 static const char* RESOURCE_DIR = "D:\\study\\VS2019Project\\LearnOpenGL\\resources";
@@ -113,7 +111,7 @@ void TextureDrawer::PreperDrawer()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void TextureDrawer::Draw()
+void TextureDrawer::Draw(int width, int height)
 {
 	glUseProgram(m_program);
 

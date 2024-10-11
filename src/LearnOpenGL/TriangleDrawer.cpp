@@ -67,7 +67,7 @@ void TriangleDrawer::PreperDrawer()
 
 }
 
-void TriangleDrawer::Draw()
+void TriangleDrawer::Draw(int width, int height)
 {
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);

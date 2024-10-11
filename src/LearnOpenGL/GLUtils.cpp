@@ -1,6 +1,7 @@
 #include "GLUtils.h"
 #include <iostream>
 
+
 GLuint GLUtils::LoadShader(GLenum shaderType, const char* shaderSource)
 {
     GLuint shader = glCreateShader(shaderType);

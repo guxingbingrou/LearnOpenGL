@@ -72,7 +72,7 @@ void RectangleDrawer::PreperDrawer()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
-void RectangleDrawer::Draw()
+void RectangleDrawer::Draw(int width, int height)
 {
 	glUseProgram(m_program);
 	glBindVertexArray(m_vao);
