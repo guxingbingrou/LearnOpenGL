@@ -21,5 +21,6 @@ private:
 
 	GLint m_texture_location[2] = { 0 };
 	GLint m_mix_location = 0;
+	GLint m_transform_location = 0;
 };
 

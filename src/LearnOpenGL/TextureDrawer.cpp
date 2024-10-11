@@ -2,6 +2,9 @@
 #include "GLUtils.h"
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -29,8 +32,10 @@ static const char vertexStr[] = GLSL_STRING(#version 330 core \n
 	out vec3 ourColor;
 	out vec2 TexCoord;
 
+	uniform mat4 transform;
+
 	void main() {
-		gl_Position = vec4(aPos, 1.0);
+		gl_Position = transform * vec4(aPos, 1.0);
 		ourColor = aColor;
 		TexCoord = aTexCoord;
 	}
@@ -98,6 +103,8 @@ void TextureDrawer::PreperDrawer()
 
 	m_mix_location = glGetUniformLocation(m_program, "mixValue");
 
+	m_transform_location = glGetUniformLocation(m_program, "transform");
+
 	glUseProgram(0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -118,9 +125,27 @@ void TextureDrawer::Draw()
 	float timeValue = glfwGetTime();
 	float mixValue = abs( sin(timeValue) );
 
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+	trans = glm::rotate(trans, timeValue, glm::vec3(0.0, 0.0, 1.0));
+
+
+	glUniformMatrix4fv(m_transform_location, 1, GL_FALSE, glm::value_ptr(trans));
+
+
 	glUniform1f(m_mix_location, mixValue);
 
 	glBindVertexArray(m_vao);
+
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+
+	trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(-0.5f, 0.5f, 0.0f));
+	trans = glm::scale(trans, glm::vec3(mixValue, mixValue, 1.0));
+
+
+	glUniformMatrix4fv(m_transform_location, 1, GL_FALSE, glm::value_ptr(trans));
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
