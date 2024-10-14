@@ -98,3 +98,7 @@ void RectangleDrawer::AfterDraw()
 void RectangleDrawer::ProcessInput(GLFWwindow* window) {
 
 }
+
+void RectangleDrawer::ProcessMouse(GLFWwindow* window, EventType type, float x, float y)
+{
+}

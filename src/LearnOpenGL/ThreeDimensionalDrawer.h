@@ -15,9 +15,14 @@ public:
 	void Draw(int width, int height) override;
 	void AfterDraw() override;
 	void ProcessInput(GLFWwindow* window) override;
+	void ProcessMouse(GLFWwindow* window, EventType type, float x, float y) override;
 
 private:
 	void LoadTexture();
+	void ProcessMouseCursor(GLFWwindow* window, float x, float y);
+	void ProcessMouseScroll(GLFWwindow* window, float x, float y);
+	int m_width = 800;
+	int m_height = 600;
 	GLuint m_vbo = 0;
 	GLuint m_vao = 0;
 	//GLuint m_ebo = 0;
@@ -32,6 +37,7 @@ private:
 	glm::vec3 m_camera_pos;
 	glm::vec3 m_camera_front;
 	glm::vec3 m_camera_up;
+	float m_fov = 45.0f;
 	
 };
 

@@ -155,6 +155,8 @@ void ThreeDimensionalDrawer::PreperDrawer()
 
 void ThreeDimensionalDrawer::Draw(int width, int height)
 {
+	m_width = width;
+	m_height = height;
 	glUseProgram(m_program);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -200,7 +202,7 @@ void ThreeDimensionalDrawer::Draw(int width, int height)
 		glUniformMatrix4fv(m_view_location, 1, GL_FALSE, glm::value_ptr(view));
 
 		glm::mat4 projection = glm::mat4(1.0f);
-		projection = glm::perspective(glm::radians(45.0f), width * 1.0f / height, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(m_fov), width * 1.0f / height, 0.1f, 100.0f);
 
 		glUniformMatrix4fv(m_projection_location, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -289,8 +291,70 @@ void ThreeDimensionalDrawer::LoadTexture()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void ThreeDimensionalDrawer::ProcessMouseCursor(GLFWwindow* window, float x, float y)
+{
+	static bool first_mouse = true;
+	static float yaw = -90.0f;
+	static float pitch = 0.0f;
+
+	static float lastX = m_width / 2;
+	static float lastY = m_height / 2;
+
+	if (first_mouse) {
+		lastX = x;
+		lastY = y;
+		first_mouse = false;
+	}
+
+	float xoffset = x - lastX;
+	float yoffset = y - lastY;
+
+	float sensitivity = 0.05f;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	m_camera_front = glm::normalize(front);
+	//std::cout << "yaw, pitch: " << yaw << " " << pitch << std::endl;
+	//std::cout << "x, y, z: " << front.x << " " << front.y << " " << front.z << std::endl;
+	//std::cout << "x, y, z: " << m_camera_front.x << " " << m_camera_front.y << " " << m_camera_front.z << std::endl;
+
+
+	lastX = x;
+	lastY = y;
+}
+
+void ThreeDimensionalDrawer::ProcessMouseScroll(GLFWwindow* window, float x, float y)
+{
+	m_fov -= y;
+
+	if (m_fov <= 1.0f)
+		m_fov = 1.0f;
+	else if (m_fov >= 45.0f)
+		m_fov = 45.0f;
+
+}
+
 void ThreeDimensionalDrawer::ProcessInput(GLFWwindow* window) {
-	float cameraSpeed = 0.05f;
+	static float lastTime = 0.0f;
+	float currentTime = glfwGetTime();
+	if (lastTime == 0.0f) {
+		lastTime = currentTime;
+	}
+
+	float cameraSpeed = 2.5f * (currentTime - lastTime);
+	//float cameraSpeed = 0.05f ;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		m_camera_pos += m_camera_front * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -299,4 +363,21 @@ void ThreeDimensionalDrawer::ProcessInput(GLFWwindow* window) {
 		m_camera_pos -= glm::normalize(glm::cross(m_camera_front, m_camera_up))  * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		m_camera_pos += glm::normalize(glm::cross(m_camera_front, m_camera_up)) * cameraSpeed;
+
+	lastTime = currentTime;
+}
+
+void ThreeDimensionalDrawer::ProcessMouse(GLFWwindow* window, EventType type, float x, float y)
+{
+	switch (type)
+	{
+	case TYPE_MOVE:
+		ProcessMouseCursor(window, x, y);
+		break;
+	case TYPE_SCROLL:
+		ProcessMouseScroll(window, x, y);
+		break;
+	default:
+		break;
+	}
 }

@@ -91,3 +91,7 @@ void TriangleDrawer::AfterDraw()
 void TriangleDrawer::ProcessInput(GLFWwindow* window) {
 
 }
+
+void TriangleDrawer::ProcessMouse(GLFWwindow* window, EventType type, float x, float y)
+{
+}

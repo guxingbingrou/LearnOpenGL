@@ -12,6 +12,7 @@ public:
 	void Draw(int width, int height) override;
 	void AfterDraw() override;
 	void ProcessInput(GLFWwindow* window) override;
+	void ProcessMouse(GLFWwindow* window, EventType type, float x, float y) override;
 
 private:
 	void LoadTexture();

@@ -8,6 +8,7 @@
 
 static int s_width = 800;
 static int s_height = 600;
+static std::unique_ptr<IDrawer> drawer;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	std::cout << "framebuffer_size_callback: " << width << "x" << height << std::endl;
@@ -26,22 +27,40 @@ void processInput(GLFWwindow* window, IDrawer* drawer) {
 }
 
 int main() {
-	//auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTriangle));
-	//auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeRectangle));
-	//auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTexture));
-	auto drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeThreeDimensional));
+	//drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTriangle));
+	//drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeRectangle));
+	//drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeTexture));
+	drawer = std::unique_ptr<IDrawer>(DrawerFactory::CreateDrawer(TypeThreeDimensional));
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	
 	GLFWwindow* window = glfwCreateWindow(s_width, s_height, "LearnOpenGL", NULL, NULL);
 	if (window == NULL) {
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
+
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	auto mouse_cursor_callback = [](GLFWwindow* window, double xpos, double ypos) {
+		//std::cout << xpos << "x" << ypos << std::endl;
+		drawer->ProcessMouse(window, TYPE_MOVE, xpos, ypos);
+	};
+
+	glfwSetCursorPosCallback(window, mouse_cursor_callback);
+
+	auto mouse_scroll_callback = [](GLFWwindow* window, double xpos, double ypos) {
+		//std::cout << xpos << "x" << ypos << std::endl;
+		drawer->ProcessMouse(window, TYPE_SCROLL, xpos, ypos);
+	};
+
+	glfwSetScrollCallback(window, mouse_scroll_callback);
+
 
 	glfwMakeContextCurrent(window);
 

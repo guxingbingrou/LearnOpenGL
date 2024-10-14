@@ -226,3 +226,7 @@ void TextureDrawer::LoadTexture()
 void TextureDrawer::ProcessInput(GLFWwindow* window) {
 
 }
+
+void TextureDrawer::ProcessMouse(GLFWwindow* window, EventType type, float x, float y)
+{
+}
